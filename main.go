@@ -13,7 +13,7 @@ import (
 
 func main() {
 	myApp := app.New()
-	mainWindow := myApp.NewWindow("自适应窗口示例")
+	mainWindow := myApp.NewWindow("NewTerminal")
 
 	// 创建子窗口内容
 	subContent := container.NewVBox(
@@ -37,12 +37,14 @@ func main() {
 	// 主窗口布局
 	mainContent := container.New(
 		layout.NewBorderLayout(
-			widget.NewLabel("主窗口标题"),
+			widget.NewLabel("ChiTerminal"),
 			nil, nil, nil,
 		),
-		widget.NewLabel("主窗口标题"),
+		widget.NewLabel("ChiTerminal"),
 		container.NewCenter(subWindow),
 	)
+	bt1 := widget.NewButton("文件管理", nil)
+	bt1.MinSize()
 
 	mainWindow.SetContent(mainContent)
 	mainWindow.Resize(fyne.NewSize(600, 400))
