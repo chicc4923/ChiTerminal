@@ -8,9 +8,9 @@ import (
 
 func main() {
 	a := app.New()
-	w := a.NewWindow("Hello")
+	w := a.NewWindow("ChiTerminal")
 
-	hello := widget.NewLabel("Hello Fyne!")
+	hello := widget.NewLabel("Hello ChiTerminal!")
 	w.SetContent(container.NewVBox(
 		hello,
 		widget.NewButton("Hi!", func() {
