@@ -1,52 +1,55 @@
 package main
 
 import (
-	"image/color"
+	"fmt"
+	"time"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
-	"fyne.io/fyne/v2/canvas"
-	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
 )
 
 func main() {
+	// 先声明一个框架实例
 	myApp := app.New()
-	mainWindow := myApp.NewWindow("NewTerminal")
+	// 创建一个新窗口，title为hello
+	myWindow := myApp.NewWindow("Hello")
+	// 给窗口创建一个标签组件，内容是hello
+	// myWindow.SetContent(widget.NewLabel("hello"))
+	clock := widget.NewLabel("")
+	updateTime(clock)
+	myWindow.SetContent(clock)
 
-	// 创建子窗口内容
-	subContent := container.NewVBox(
-		widget.NewLabel("子窗口内容"),
-		widget.NewButton("点击", func() {
-			println("按钮被点击")
-		}),
-	)
+	go func() {
+		for range time.Tick(time.Second) {
+			updateTime(clock)
+		}
+	}()
 
-	// 创建子窗口背景和边框
-	subBg := canvas.NewRectangle(color.RGBA{R: 230, G: 230, B: 230, A: 255})
-	subBg.SetMinSize(fyne.NewSize(300, 200))
+	myWindow.Resize(fyne.NewSize(100, 100))
 
-	// 使用 container.New 替代 NewMax/NewStacked
-	subWindow := container.New(
-		layout.NewMaxLayout(),
-		subBg,
-		container.NewPadded(subContent),
-	)
+	// 展示这个窗口
+	myWindow.Show()
 
-	// 主窗口布局
-	mainContent := container.New(
-		layout.NewBorderLayout(
-			widget.NewLabel("ChiTerminal"),
-			nil, nil, nil,
-		),
-		widget.NewLabel("ChiTerminal"),
-		container.NewCenter(subWindow),
-	)
-	bt1 := widget.NewButton("文件管理", nil)
-	bt1.MinSize()
+	myWindow2 := myApp.NewWindow("Larger")
+	myWindow2.SetContent(widget.NewLabel("New Content"))
+	myWindow2.SetContent(widget.NewButton("Open New Button", func() {
+		w3 := myApp.NewWindow("Third")
+		w3.SetContent(widget.NewLabel("Third Content"))
+		w3.Show()
+	}))
+	myWindow2.Show()
+	// 启动事件循环
+	myApp.Run()
+	tidyUp()
+}
 
-	mainWindow.SetContent(mainContent)
-	mainWindow.Resize(fyne.NewSize(600, 400))
-	mainWindow.ShowAndRun()
+// 退出时控制台输出
+func tidyUp() {
+	fmt.Println("Exited")
+}
+
+func updateTime(clock *widget.Label) {
+	format := time.Now().Format("Time: 03:04:05")
+	clock.SetText(format)
 }
