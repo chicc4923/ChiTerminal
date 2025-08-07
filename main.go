@@ -6,41 +6,19 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/canvas"
+	"fyne.io/fyne/v2/container"
 )
 
 func main() {
 	myApp := app.New()
-	w1 := myApp.NewWindow("Canvas")
-	myCanvas := w1.Canvas()
-
-	// blue := color.NRGBA{R: 0, G: 0, B: 180, A: 255}
-	// rect := canvas.NewRectangle(blue)
-	// myCanvas.SetContent(rect)
-
-	// go func() {
-	// 	time.Sleep(3 * time.Second)
-	// 	green := color.NRGBA{R: 0, G: 180, B: 0, A: 255}
-	// 	rect.FillColor = green
-	// 	rect.Refresh()
-	// }()
-	setContentToText(myCanvas)
-	setContentToCircle(myCanvas)
-
-	w1.Resize(fyne.NewSize(100, 100))
-	w1.ShowAndRun()
-}
-
-func setContentToText(c fyne.Canvas) {
+	w1 := myApp.NewWindow("Container")
 	green := color.NRGBA{R: 0, G: 180, B: 0, A: 255}
-	text := canvas.NewText("Text", green)
-	text.TextStyle.Bold = true
-	c.SetContent(text)
-}
+	text1 := canvas.NewText("Hello", green)
+	text2 := canvas.NewText("There", green)
+	text1.Move(fyne.NewPos(10, 10))
+	text2.Move(fyne.NewPos(10, 30))
+	content := container.NewWithoutLayout(text1, text2)
 
-func setContentToCircle(c fyne.Canvas) {
-	red := color.NRGBA{R: 0xff, G: 0x33, B: 0x33, A: 0xff}
-	circle := canvas.NewCircle(color.White)
-	circle.StrokeWidth = 4
-	circle.StrokeColor = red
-	c.SetContent(circle)
+	w1.SetContent(content)
+	w1.ShowAndRun()
 }
