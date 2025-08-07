@@ -6,6 +6,7 @@ import (
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
+	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
 )
 
@@ -39,6 +40,11 @@ func main() {
 		w3.Show()
 	}))
 	myWindow2.Show()
+
+	w4 := myApp.NewWindow("Fourth")
+	w4.SetContent(container.NewVBox(makeUI()))
+	w4.Show()
+
 	// 启动事件循环
 	myApp.Run()
 	tidyUp()
@@ -52,4 +58,14 @@ func tidyUp() {
 func updateTime(clock *widget.Label) {
 	format := time.Now().Format("Time: 03:04:05")
 	clock.SetText(format)
+}
+
+func makeUI() (*widget.Label, *widget.Entry) {
+	out := widget.NewLabel("Hello world!")
+	in := widget.NewEntry()
+
+	in.OnChanged = func(content string) {
+		out.SetText("Hello " + content + "!")
+	}
+	return out, in
 }
